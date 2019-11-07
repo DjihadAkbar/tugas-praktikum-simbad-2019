@@ -1,0 +1,78 @@
+C:\Program Files\MariaDB 10.4\bin\mysqld.exe, Version: 10.4.8-MariaDB (mariadb.org binary distribution). started with:
+TCP Port: 3306, Named Pipe: MySQL
+Time		    Id Command	Argument
+191108  6:04:16	   965 Query	SELECT customers.customerName, COUNT(products.productName), (SELECT GROUP_CONCAT(productName) FROM products) FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName
+191108  6:05:34	   965 Query	SELECT customers.customerName, COUNT(products.productName), (SELECT GROUP_CONCAT(productName) FROM products) FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName ORDER COUNT(products.productName) DESC
+191108  6:05:58	   965 Query	SELECT customers.customerName, COUNT(products.productName), (SELECT GROUP_CONCAT(productName) FROM products) FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName HAVING COUNT(products.productName) DESC
+191108  6:09:00	   965 Query	SELECT customers.customerName, COUNT(products.productName), (SELECT GROUP_CONCAT(productName) FROM products) FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) [WHERE products.productName | GROUP BY customerName HAVING COUNT(products.productName)] DESC
+191108  6:10:13	   965 Query	SELECT customers.customerName, COUNT(products.productName) AS qty, (SELECT GROUP_CONCAT(productName) FROM products) FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName ORDER BY qty DESC
+191108  6:11:37	   965 Query	CREATE VIEW order_View AS SELECT customers.customerName, COUNT(products.productName) AS qty, (SELECT GROUP_CONCAT(productName) FROM products) FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName ORDER BY qty ASC
+191108  6:11:43	   965 Query	SHOW TABLES
+191108  6:12:02	   965 Query	SELECT * FROM order_view LIMIT 10
+191108  6:12:38	   965 Query	DROP TABLES order_view
+191108  6:12:45	   965 Query	DROP VIEW order_view
+191108  6:13:13	   965 Query	CREATE VIEW order_View AS SELECT customers.customerName AS customer, COUNT(products.productName) AS qty, (SELECT GROUP_CONCAT(productName) FROM products LIMIT 10) AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName ORDER BY qty ASC
+191108  6:13:22	   965 Query	SELECT * FROM order_view
+191108  6:13:48	   965 Query	SHOW TABLES
+191108  6:14:57	   965 Query	RENAME VIEW order_view TO vw_order
+191108  6:15:07	   965 Query	DROP VIEW order_view
+191108  6:15:29	   965 Query	CREATE VIEW vw_order AS SELECT customers.customerName AS customer, COUNT(products.productName) AS qty, (SELECT GROUP_CONCAT(productName) FROM products LIMIT 10) AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName ORDER BY qty ASC
+191108  6:15:33	   965 Query	SHOW TABLES
+191108  6:18:20	   965 Query	SELECT * FROM employees
+191108  6:20:03	   965 Query	SELECT * FROM product
+191108  6:20:06	   965 Query	SELECT * FROM products
+191108  6:24:08	   965 Query	CREATE PROCEDURE get_Employee(employeeNumber INT)
+BEGIN
+SHOW TABLES
+191108  6:24:38	   965 Query	CREATE PROCEDURE get_Employee(employeeID INT)
+BEGIN
+SELECT * FROM employees WHERE employeeNumber = employeeID;
+END
+191108  6:24:53	   965 Query	CALL get_Employee(1011)
+191108  6:25:06	   965 Query	SELECT * FROM employees
+191108  6:25:17	   965 Query	CALL get_Employee(1002)
+191108  6:27:01	   965 Query	CREATE PROCEDURE get_Product(productID INT)
+BEGIN
+SELECT * FROM products WHERE productCode = productID;
+END
+191108  6:28:31	   965 Query	DROP PROCEDURE get_Product
+191108  6:29:07	   965 Query	CREATE PROCEDURE get_Product(productID VARCHAR)
+BEGIN
+SELECT * FROM products WHERE productCode = productID;
+END
+191108  6:31:15	   965 Query	DESC products
+191108  6:32:42	   965 Query	CREATE PROCEDURE get_Product(IN productID VARCHAR(15))
+BEGIN
+SELECT * FROM products WHERE productCode = productID;
+END
+191108  6:33:04	   965 Query	CALL get_Product(S17_255)
+191108  6:33:32	   965 Query	CALL get_Product(S32_3212)
+191108  6:33:53	   965 Query	CALL get_Product('S32_3212')
+191108  6:36:24	   965 Query	CALL get_Product('S37_3212')
+191108  6:36:37	   965 Query	CALL get_Product('S72_3212')
+191108  6:37:06	   965 Query	DESC orderdetails
+191108  6:39:45	   965 Query	CREATE PROCEDURE get_Order(customerID INT)
+BEGIN
+SELECT customers.customerName AS customer, COUNT(products.productName) AS qty, (SELECT GROUP_CONCAT(productName) FROM products) AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName WHERE customerNumber = customerID; 
+END
+191108  6:40:36	   965 Query	SELECT customers.customerName AS customer, COUNT(products.productName) AS qty, productName AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) WHERE customerNumber = customerID
+191108  6:40:51	   965 Query	CREATE PROCEDURE get_Order(customerID INT)
+BEGIN
+SELECT customers.customerName AS customer, COUNT(products.productName) AS qty, productName AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) WHERE customerNumber = customerID; 
+END
+191108  6:41:20	   965 Query	CALL get_Order(255)
+191108  6:41:37	   965 Query	CALL get_Order(2)
+191108  6:41:40	   965 Query	CALL get_Order(1)
+191108  6:41:42	   965 Query	CALL get_Order(100)
+191108  6:42:14	   965 Query	SELECT customerNumber, customers.customerName AS customer, COUNT(products.productName) AS qty, productName AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) WHERE customerNumber = customerID
+191108  6:42:26	   965 Query	SELECT customerNumber, customers.customerName AS customer, COUNT(products.productName) AS qty, productName AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber)
+191108  6:43:03	   965 Query	DROP PROCEDURE get_Order
+191108  6:43:43	   965 Query	CREATE PROCEDURE get_Order(customerID INT)
+SELECT customerNumber, customers.customerName AS customer, COUNT(products.productName) AS qty, productName AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) WHERE customerNumber = customerID GROUP BY customerName
+191108  6:43:55	   965 Query	CALL get_Order(255)
+191108  6:44:15	   965 Query	SELECT customerNumber, customers.customerName AS customer, COUNT(products.productName) AS qty, productName AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) WHERE customerNumber = customerID GROUP BY customerName
+191108  6:44:24	   965 Query	SELECT customerNumber, customers.customerName AS customer, COUNT(products.productName) AS qty, productName AS product FROM orders JOIN orderdetails USING(orderNumber) JOIN products USING(productCode) JOIN customers USING(customerNumber) GROUP BY customerName
+191108  6:44:34	   965 Query	CALL get_Order(311)
+191108  6:46:06	   965 Query	SHOW PROCEDURE STATUS;
+/
+/
